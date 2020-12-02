@@ -28,6 +28,7 @@ jobs:
           go get -v -t -d ./...
       - name: Test Private
         run: go test -v
-
       - name: Test All
         run: go test ./...
+      - name: Build source
+        run: go build -v
