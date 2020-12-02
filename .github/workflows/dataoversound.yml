@@ -1,5 +1,11 @@
 name: Test
-on: [ push, pull_request ]
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 jobs:
   build:
     name: Build
@@ -16,9 +22,8 @@ jobs:
 
       - name: Get dependencies
         run: |
-          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-          HOMEBREW_NO_AUTO_UPDATE=1 brew install portaudio
-          HOMEBREW_NO_AUTO_UPDATE=1 brew install pkg-config
+          brew install portaudio
+          brew install pkg-config
           go get -v -t -d ./...
       - name: Test Private
         run: go test -v
