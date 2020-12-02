@@ -1,0 +1,33 @@
+name: Test
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+jobs:
+  build:
+    name: Build
+    runs-on: macos-latest
+    steps:
+      - name: Set up Go 1.15
+        uses: actions/setup-go@v1
+        with:
+          go-version: 1.15
+        id: go
+
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v1
+
+      - name: Get dependencies
+        run: |
+          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+          HOMEBREW_NO_AUTO_UPDATE=1 brew install portaudio
+          HOMEBREW_NO_AUTO_UPDATE=1 brew install pkg-config
+          go get -v -t -d ./...
+      - name: Test Private
+        run: go test -v
+
+      - name: Test All
+        run: go test ./...
